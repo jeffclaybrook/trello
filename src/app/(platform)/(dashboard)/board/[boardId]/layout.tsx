@@ -4,13 +4,20 @@ import { auth } from "@clerk/nextjs/server"
 import { prisma } from "@/lib/prisma"
 import { BoardNavbar } from "./_components/BoardNavbar"
 
-export async function generateMetadata({
- params
-}: {
+type BoardParams = {
  params: {
   boardId: string
  }
-}) {
+}
+
+type BoardLayoutProps = {
+ children: ReactNode
+ params: {
+  boardId: string
+ }
+}
+
+export async function generateMetadata({ params }: BoardParams) {
  const { orgId } = await auth()
 
  if (!orgId) {
@@ -34,12 +41,7 @@ export async function generateMetadata({
 export default async function BoardLayout({
  children,
  params
-}: {
- children: ReactNode
- params: {
-  boardId: string
- }
-}) {
+}: BoardLayoutProps) {
  const { orgId } = await auth()
 
  if (!orgId) {
